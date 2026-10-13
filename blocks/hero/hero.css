@@ -1,37 +1,56 @@
-.hero-container .hero-wrapper {
-  max-width: unset;
-  padding: 0;
+/* hero: copy left, a 1:1 or 4:3 cutout right; stacks on phones */
+main .hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
-.hero {
-  position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+main .hero .hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+main .hero .hero-content > * {
+  margin: 0;
 }
 
-.hero picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+main .hero .hero-content > p:not(.kicker, .button-wrapper) {
+  max-width: 460px;
 }
 
-.hero img {
-  object-fit: cover;
+main .hero .hero-content .button-group {
+  margin: 0;
+}
+
+main .hero .hero-media {
+  align-self: center;
   width: 100%;
-  height: 100%;
+  max-width: 240px;
+  margin: 0;
+  border-radius: var(--radius-card);
+  background-color: var(--color-dune);
+  overflow: hidden;
+}
+
+main .hero .hero-media picture,
+main .hero .hero-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  object-fit: contain;
 }
 
 @media (width >= 900px) {
-  .hero {
-    padding: 40px 32px;
+  main .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  main .hero .hero-media {
+    max-width: none;
   }
 }

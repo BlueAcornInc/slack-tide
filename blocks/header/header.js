@@ -1,4 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
+import { decorateBlockIcons } from '../../scripts/scripts.js';
+import { CART_EVENT, getCartCount } from '../../scripts/cart.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
@@ -21,7 +23,7 @@ function closeOnEscape(e) {
     } else if (!isDesktop.matches) {
       // eslint-disable-next-line no-use-before-define
       toggleMenu(nav, navSections);
-      nav.querySelector('button').focus();
+      nav.querySelector('.nav-hamburger button').focus();
     }
   }
 }
@@ -72,7 +74,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   if (isDesktop.matches) nav.removeAttribute('aria-expanded');
   else nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
-  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
+  button.setAttribute('aria-label', expanded ? 'Open menu' : 'Close menu');
 
   // enable menu collapse on escape keypress
   if (!expanded || isDesktop.matches) {
@@ -108,12 +110,12 @@ export default async function decorate(block) {
     if (section) section.classList.add(`nav-${c}`);
   });
 
-  const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand.querySelector('.button');
-  if (brandLink) {
-    brandLink.className = '';
-    brandLink.closest('.button-container').className = '';
-  }
+  // brand and tools links are plain links here, not buttons or arrow links
+  nav.querySelectorAll('.nav-brand a, .nav-tools a').forEach((a) => {
+    a.className = '';
+    const p = a.closest('p');
+    if (p) p.className = '';
+  });
 
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
@@ -140,14 +142,51 @@ export default async function decorate(block) {
     });
   }
 
-  // hamburger for mobile
+  // cart: icon, label (shown in the open phone menu), and a count pill
+  const navTools = nav.querySelector('.nav-tools');
+  const cartLink = navTools && navTools.querySelector('a');
+  if (cartLink) {
+    const label = cartLink.textContent.trim() || 'Cart';
+    cartLink.className = 'nav-cart';
+    cartLink.textContent = '';
+    const icon = document.createElement('span');
+    icon.className = 'icon icon-cart';
+    const text = document.createElement('span');
+    text.className = 'nav-cart-label';
+    text.textContent = label;
+    const count = document.createElement('span');
+    count.className = 'nav-cart-count';
+    cartLink.append(icon, text, count);
+    const update = () => {
+      const n = getCartCount();
+      count.textContent = n;
+      count.hidden = n === 0;
+      cartLink.setAttribute('aria-label', `${label}, ${n} ${n === 1 ? 'item' : 'items'}`);
+    };
+    update();
+    window.addEventListener(CART_EVENT, update);
+    window.addEventListener('storage', update);
+    navTools.querySelectorAll('p').forEach((p) => {
+      if (!p.contains(cartLink)) p.classList.add('nav-blurb');
+    });
+  }
+
+  // menu button for phones, after the cart
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-      <span class="nav-hamburger-icon"></span>
-    </button>`;
+  const menuButton = document.createElement('button');
+  menuButton.type = 'button';
+  menuButton.setAttribute('aria-controls', 'nav');
+  menuButton.setAttribute('aria-label', 'Open menu');
+  ['menu', 'close'].forEach((name) => {
+    const icon = document.createElement('span');
+    icon.className = `icon icon-${name}`;
+    menuButton.append(icon);
+  });
+  hamburger.append(menuButton);
   hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  nav.prepend(hamburger);
+  nav.append(hamburger);
+  decorateBlockIcons(nav);
   nav.setAttribute('aria-expanded', 'false');
   // prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);

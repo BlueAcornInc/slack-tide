@@ -124,7 +124,12 @@ function decorateButtons(main) {
     // require authored formatting for buttonization
     const strong = a.closest('strong');
     const em = a.closest('em');
-    if (!strong && !em) return;
+    if (!strong && !em) {
+      // a plain link alone in its paragraph is a "view all" arrow link
+      p.classList.add('link-arrow-wrapper');
+      a.classList.add('link-arrow');
+      return;
+    }
 
     p.className = 'button-wrapper';
     a.className = 'button';
@@ -139,6 +144,61 @@ function decorateButtons(main) {
       a.classList.add('secondary');
       em.replaceWith(a);
     }
+  });
+}
+
+/**
+ * Wraps runs of adjacent button paragraphs so they sit side by side.
+ * @param {HTMLElement} main The main container element
+ */
+function groupButtons(main) {
+  main.querySelectorAll('p.button-wrapper').forEach((p) => {
+    if (p.parentElement.classList.contains('button-group')) return;
+    const prev = p.previousElementSibling;
+    if (prev && prev.classList.contains('button-group')) {
+      prev.append(p);
+      return;
+    }
+    const next = p.nextElementSibling;
+    if (!next || !next.classList.contains('button-wrapper')) return;
+    const group = document.createElement('div');
+    group.className = 'button-group';
+    p.before(group);
+    group.append(p);
+  });
+}
+
+/**
+ * Turns a short bold-only paragraph right after a heading into the roast badge,
+ * and lays out section heads: heading text on the left, a "view all" link on the right.
+ * @param {HTMLElement} main The main container element
+ */
+function decorateSectionHeads(main) {
+  main.querySelectorAll('h2 + p, h3 + p').forEach((p) => {
+    const strong = p.querySelector(':scope > strong');
+    if (!strong || p.childElementCount !== 1 || p.querySelector('a')) return;
+    const text = p.textContent.trim();
+    if (!text || text !== strong.textContent.trim() || text.length > 24) return;
+    const heading = p.previousElementSibling;
+    const row = document.createElement('div');
+    row.className = 'heading-row';
+    heading.before(row);
+    const badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.textContent = text;
+    row.append(heading, badge);
+    p.remove();
+  });
+
+  main.querySelectorAll('.default-content-wrapper').forEach((wrapper) => {
+    const last = wrapper.lastElementChild;
+    if (!last || !last.classList.contains('link-arrow-wrapper')) return;
+    if (!wrapper.querySelector(':scope > h2, :scope > .heading-row')) return;
+    const text = document.createElement('div');
+    text.className = 'section-head-text';
+    [...wrapper.children].filter((el) => el !== last).forEach((el) => text.append(el));
+    wrapper.prepend(text);
+    wrapper.classList.add('section-head');
   });
 }
 
@@ -168,10 +228,18 @@ function inlineIcons(element) {
 }
 
 /**
+ * Decorates and inlines any icon spans inside an element (for markup built by blocks).
+ * @param {Element} element Element containing span.icon elements
+ */
+export function decorateBlockIcons(element) {
+  decorateIcons(element);
+  inlineIcons(element);
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
   inlineIcons(main);
@@ -179,6 +247,8 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  groupButtons(main);
+  decorateSectionHeads(main);
 }
 
 /**

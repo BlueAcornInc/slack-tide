@@ -1,0 +1,115 @@
+/* roast schedule: Dune rows on Paper, Paper rows on Dune, outlined rows on Ink */
+main .roast-schedule ol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main .roast-schedule > ol > li {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: var(--space-3);
+  border-radius: var(--radius-card);
+  background-color: var(--color-dune);
+  color: var(--color-ink);
+}
+
+main .roast-schedule > ol > li p {
+  margin: 0;
+}
+
+main .roast-schedule .schedule-when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--space-1);
+  font-size: var(--font-size-small);
+  line-height: 1.45;
+}
+
+main .roast-schedule .schedule-date {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+main .roast-schedule .schedule-ship {
+  color: var(--color-ink-soft);
+}
+
+main .roast-schedule .schedule-coffee {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+main .roast-schedule h3 {
+  margin: 0;
+}
+
+main .roast-schedule h3 a:any-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+main .roast-schedule h3 a:hover {
+  text-decoration: underline;
+}
+
+main .roast-schedule .schedule-buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+main .roast-schedule .schedule-buy a.link-arrow:any-link {
+  color: var(--color-ink);
+}
+
+/* on a Dune section the rows flip to Paper */
+main .section.dune .roast-schedule > ol > li {
+  background-color: var(--color-paper);
+}
+
+/* on Ink the rows are outlined */
+main .section.ink .roast-schedule > ol > li {
+  border: var(--rule-width) solid var(--color-paper);
+  background-color: transparent;
+  color: var(--color-paper);
+}
+
+main .section.ink .roast-schedule .schedule-ship {
+  color: var(--color-dune);
+}
+
+main .section.ink .roast-schedule .schedule-buy a.link-arrow:any-link {
+  color: var(--color-paper);
+}
+
+@media (width >= 900px) {
+  main .roast-schedule > ol > li {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1.4fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  main .roast-schedule .schedule-when {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  main .roast-schedule .schedule-notes {
+    font-size: var(--font-size-body);
+  }
+
+  main .roast-schedule .schedule-buy {
+    justify-content: flex-end;
+  }
+}

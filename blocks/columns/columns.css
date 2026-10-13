@@ -1,33 +1,104 @@
-.columns > div {
+main .columns > div {
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
 }
 
-.columns img {
+main .columns > div + div {
+  margin-top: var(--space-4);
+}
+
+main .columns > div > div > :first-child {
+  margin-top: 0;
+}
+
+main .columns > div > div > :last-child {
+  margin-bottom: 0;
+}
+
+main .columns img {
   width: 100%;
 }
 
-.columns > div > div {
+main .columns > div > div {
   order: 1;
 }
 
-.columns > div > .columns-img-col {
+main .columns > div > .columns-img-col {
   order: 0;
 }
 
-.columns > div > .columns-img-col img {
+main .columns > div > .columns-img-col img {
   display: block;
 }
 
+/* steps: numbered circles, Dune on Paper and Paper on Dune */
+main .columns .steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main .columns .steps-list li {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-2);
+}
+
+main .columns .step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-dune);
+  color: var(--color-ink);
+  font-family: var(--heading-font-family);
+  font-size: var(--font-size-price);
+  font-weight: 700;
+  line-height: 1;
+}
+
+main .section.dune .columns .step-number {
+  background-color: var(--color-paper);
+}
+
+main .section.ink .columns .step-number {
+  border: var(--rule-width) solid var(--color-paper);
+  background-color: transparent;
+  color: var(--color-paper);
+}
+
+main .columns .step-text > * {
+  margin: 0;
+}
+
+main .columns .step-text > * + * {
+  margin-top: 4px;
+}
+
+main .columns.steps > div > div:first-child p:not(.button-wrapper) {
+  max-width: 460px;
+}
+
 @media (width >= 900px) {
-  .columns > div {
+  main .columns > div {
+    flex-direction: row;
     align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+    gap: var(--space-8);
   }
 
-  .columns > div > div {
+  main .columns > div > div {
     flex: 1;
     order: unset;
+  }
+
+  main .columns.steps > div {
+    align-items: start;
   }
 }
