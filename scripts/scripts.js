@@ -142,6 +142,31 @@ function decorateButtons(main) {
   });
 }
 
+const iconSources = {};
+
+/**
+ * Swaps the <img> that decorateIcons adds for the SVG itself,
+ * so stroke="currentColor" icons pick up the surrounding text color.
+ * @param {Element} element Element containing icons
+ */
+function inlineIcons(element) {
+  element.querySelectorAll('span.icon > img[data-icon-name]').forEach(async (img) => {
+    const { iconName } = img.dataset;
+    try {
+      iconSources[iconName] = iconSources[iconName]
+        || fetch(img.src).then((resp) => (resp.ok ? resp.text() : ''));
+      const svg = await iconSources[iconName];
+      if (!svg.startsWith('<svg') || !img.isConnected) return;
+      const span = img.parentElement;
+      span.innerHTML = svg;
+      span.firstElementChild.setAttribute('aria-hidden', 'true');
+      span.firstElementChild.setAttribute('focusable', 'false');
+    } catch (e) {
+      // keep the <img>
+    }
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -149,6 +174,7 @@ function decorateButtons(main) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
+  inlineIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
