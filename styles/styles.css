@@ -10,63 +10,114 @@
  * governing permissions and limitations under the License.
  */
 
+/*
+ * Slack Tide Daylight: design tokens.
+ * Names match the Foundations spec (color-paper, space-3, radius-card).
+ * The boilerplate names (--background-color, --heading-font-size-xl, ...) are kept as
+ * aliases so existing blocks keep working.
+ */
 :root {
-  /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  /* color: mostly Paper with one warm action color */
+  --color-paper: #f8f7f3;
+  --color-ink: #1e1b1a;
+  --color-ink-soft: #6a5f55;
+  --color-tangerine: #f0622f;
+  --color-white: #fff;
+  --color-sky: #8bb8e8;
+  --color-sky-deep: #4e8fd1;
+  --color-dune: #e9dfcb;
+
+  /* color aliases (boilerplate names) */
+  --background-color: var(--color-paper);
+  --light-color: var(--color-dune);
+  --dark-color: var(--color-ink-soft);
+  --text-color: var(--color-ink);
+  --text-color-soft: var(--color-ink-soft);
+  --link-color: var(--color-sky-deep);
+  --link-hover-color: var(--color-ink);
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --heading-font-family: bricolage-grotesque, bricolage-grotesque-fallback, system-ui, sans-serif;
+  --body-font-family: karla, karla-fallback, system-ui, georgia, sans-serif;
+  --fixed-font-family: ui-monospace, menlo, monospace;
 
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
+  /* type: mobile values here, desktop values switch at 900px */
+  --font-size-display: 36px;
+  --font-size-h2: 28px;
+  --font-size-h3: 22px;
+  --font-size-body: 16px;
+  --font-size-small: 14px;
+  --font-size-kicker: 14px;
+  --font-size-button: 15px;
+  --font-size-price: 18px;
 
-  /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
+  /* type aliases (boilerplate names); h4 to h6 are derived, the spec stops at h3 */
+  --heading-font-size-xxl: var(--font-size-display);
+  --heading-font-size-xl: var(--font-size-h2);
+  --heading-font-size-l: var(--font-size-h3);
+  --heading-font-size-m: 20px;
+  --heading-font-size-s: 18px;
+  --heading-font-size-xs: 16px;
+  --body-font-size-m: var(--font-size-body);
+  --body-font-size-s: var(--font-size-small);
+  --body-font-size-xs: var(--font-size-small);
 
-  /* nav height */
+  /* spacing: 8px base, every gap and padding is a multiple */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-8: 64px;
+  --section-padding: var(--space-5);
+
+  /* shape, rules, focus: nothing square, no hairlines, no drop shadows */
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --rule-width: 2px;
+  --focus-ring: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-sky-deep);
+
+  /* layout */
+  --content-max: 1200px;
+  --measure: 68ch;
+  --max-content-width: var(--content-max);
   --nav-height: 64px;
+
+  /* motion: 150 to 250ms, answers the person */
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
+
+  /* rotate: the roast badge only */
+  --badge-tilt: -6deg;
 }
 
-/* fallback fonts */
+/* fallback fonts, size-adjusted to Arial from font metrics */
 @font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
+  font-family: bricolage-grotesque-fallback;
+  size-adjust: 105.428%;
   src: local('Arial');
 }
 
 @font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
+  font-family: karla-fallback;
+  size-adjust: 102.4%;
   src: local('Arial');
 }
 
 @media (width >= 900px) {
   :root {
-    /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
+    --font-size-display: 56px;
+    --font-size-h2: 36px;
+    --font-size-h3: 24px;
+    --font-size-body: 17px;
+    --section-padding: var(--space-8);
+  }
+}
 
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
   }
 }
 
@@ -77,7 +128,7 @@ body {
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 body.appear {
@@ -98,26 +149,49 @@ footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
 
+/* headings: Bricolage Grotesque, tight tracking */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
   font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
   scroll-margin: 40px;
 }
 
-h1 { font-size: var(--heading-font-size-xxl); }
+h1 {
+  font-size: var(--heading-font-size-xxl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
 h2 { font-size: var(--heading-font-size-xl); }
-h3 { font-size: var(--heading-font-size-l); }
+
+h3 {
+  font-size: var(--heading-font-size-l);
+  line-height: 1.2;
+}
+
 h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
 h6 { font-size: var(--heading-font-size-xs); }
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+  margin-top: 0;
+}
 
 p,
 dl,
@@ -125,25 +199,33 @@ ol,
 ul,
 pre,
 blockquote {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* prose measure for authored copy */
+main .default-content-wrapper p,
+main .default-content-wrapper ul,
+main .default-content-wrapper ol {
+  max-width: var(--measure);
 }
 
 code,
 pre {
+  font-family: var(--fixed-font-family);
   font-size: var(--body-font-size-s);
 }
 
 pre {
-  padding: 16px;
-  border-radius: 8px;
+  padding: var(--space-2);
+  border-radius: var(--radius-card);
   background-color: var(--light-color);
   overflow-x: auto;
   white-space: pre;
-}
-
-main > div {
-  margin: 40px 16px;
 }
 
 input,
@@ -153,21 +235,46 @@ button {
   font: inherit;
 }
 
-/* links */
+/* form controls: pill inputs, 2px Ink rule, 44px targets */
+input:not([type="checkbox"], [type="radio"], [type="range"]),
+select,
+textarea {
+  box-sizing: border-box;
+  min-height: 44px;
+  border: var(--rule-width) solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-3);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+textarea {
+  border-radius: var(--radius-card);
+  padding: var(--space-2) var(--space-3);
+}
+
+/* links: always underlined, 2px, Sky deep */
 a:any-link {
   color: var(--link-color);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
   overflow-wrap: break-word;
 }
 
 a:hover {
   color: var(--link-hover-color);
-  text-decoration: underline;
 }
 
-/* buttons */
+/* focus: the one shadow in the system */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* buttons: Bricolage 15/700, pill, 2px border */
 p.button-wrapper {
-  margin: 12px 0;
+  margin: var(--space-2) 0;
 }
 
 a.button:any-link,
@@ -176,19 +283,32 @@ button.button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-1);
   max-width: 100%;
+  min-height: 44px;
   margin: 0;
-  border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
-  font: inherit;
-  font-weight: 500;
-  line-height: 1.25;
+  border: var(--rule-width) solid transparent;
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-3);
+  font-family: var(--heading-font-family);
+  font-size: var(--font-size-button);
+  font-weight: 700;
+  line-height: 1;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition:
+    background-color var(--motion-fast),
+    border-color var(--motion-fast),
+    color var(--motion-fast),
+    transform var(--motion-fast);
+}
+
+a.button:any-link:active,
+button.button:active {
+  transform: translateY(1px);
 }
 
 a.button[aria-disabled="true"],
@@ -197,33 +317,22 @@ button.button:disabled {
   pointer-events: none;
 }
 
+/* primary: Tangerine. One per view. */
 a.button.primary,
 button.button.primary {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  border-color: var(--color-tangerine);
+  background-color: var(--color-tangerine);
+  color: var(--color-white);
 }
 
 a.button.primary:hover,
 a.button.primary:focus-visible,
 button.button.primary:hover,
 button.button.primary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  border-color: var(--color-ink);
 }
 
-a.button.primary[aria-disabled="true"],
-a.button.primary[aria-disabled="true"]:hover,
-a.button.primary[aria-disabled="true"]:focus-visible,
-button.button.primary:disabled,
-button.button.primary:disabled:hover,
-button.button.primary:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
-}
-
+/* secondary: 2px outline in the current text color, Sky on hover */
 a.button.secondary,
 button.button.secondary {
   border-color: var(--text-color);
@@ -235,27 +344,16 @@ a.button.secondary:hover,
 a.button.secondary:focus-visible,
 button.button.secondary:hover,
 button.button.secondary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--light-color);
-  color: var(--dark-color);
+  border-color: var(--color-ink);
+  background-color: var(--color-sky);
+  color: var(--color-ink);
 }
 
-a.button.secondary[aria-disabled="true"],
-a.button.secondary[aria-disabled="true"]:hover,
-a.button.secondary[aria-disabled="true"]:focus-visible,
-button.button.secondary:disabled,
-button.button.secondary:disabled:hover,
-button.button.secondary:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
-}
-
-/* high-impact call-to-action */
+/* accent: the Ink fill (inverts on an Ink section) */
 a.button.accent,
 button.button.accent {
-  border-color: var(--link-color);
-  background-color: var(--link-color);
+  border-color: var(--text-color);
+  background-color: var(--text-color);
   color: var(--background-color);
 }
 
@@ -263,63 +361,144 @@ a.button.accent:hover,
 a.button.accent:focus-visible,
 button.button.accent:hover,
 button.button.accent:focus-visible {
-  border-color: var(--link-hover-color);
-  background-color: var(--link-hover-color);
+  border-color: var(--dark-color);
+  background-color: var(--dark-color);
 }
 
-a.button.accent[aria-disabled="true"],
-a.button.accent[aria-disabled="true"]:hover,
-a.button.accent[aria-disabled="true"]:focus-visible,
-button.button.accent:disabled,
-button.button.accent:disabled:hover,
-button.button.accent:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
+a.button[aria-disabled="true"],
+a.button[aria-disabled="true"]:hover,
+a.button[aria-disabled="true"]:focus-visible,
+button.button:disabled,
+button.button:disabled:hover,
+button.button:disabled:focus-visible {
+  border-color: var(--color-dune);
+  background-color: var(--color-dune);
+  color: var(--color-ink-soft);
 }
 
 main img {
   max-width: 100%;
   width: auto;
   height: auto;
+  border-radius: var(--radius-card);
 }
 
+/* icons: inline stroke SVG at 24, 20 inside buttons */
 .icon {
   display: inline-block;
   height: 24px;
   width: 24px;
+  vertical-align: middle;
 }
 
-.icon img {
+.icon img,
+.icon svg {
+  display: block;
   height: 100%;
   width: 100%;
 }
 
-/* sections */
+.button .icon {
+  height: 20px;
+  width: 20px;
+}
+
+/* text styles for blocks */
+.kicker {
+  font-family: var(--heading-font-family);
+  font-size: var(--font-size-kicker);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-sky-deep);
+}
+
+.price {
+  font-family: var(--heading-font-family);
+  font-size: var(--font-size-price);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.text-soft {
+  color: var(--text-color-soft);
+}
+
+/* the roast badge: Tangerine pill, the only thing that rotates */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-tangerine);
+  color: var(--color-white);
+  font-family: var(--heading-font-family);
+  font-size: var(--font-size-kicker);
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  transform: rotate(var(--badge-tilt));
+}
+
+/* sections: padded, a 2px Ink rule between them */
 main > .section {
-  margin: 40px 0;
+  margin: 0;
+  padding: var(--section-padding) 0;
+}
+
+main > .section + .section {
+  border-top: var(--rule-width) solid var(--color-ink);
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: var(--content-max);
   margin: auto;
-  padding: 0 24px;
+  padding: 0 var(--space-3);
 }
 
-main > .section:first-of-type {
-  margin-top: 0;
+main > .section > div + div {
+  margin-top: var(--space-4);
 }
 
 @media (width >= 900px) {
   main > .section > div {
-    padding: 0 32px;
+    padding: 0 var(--space-5);
   }
 }
 
-/* section metadata */
+/* section styles (Section Metadata > style) */
+main .section.dune,
 main .section.light,
 main .section.highlight {
-  background-color: var(--light-color);
-  margin: 0;
-  padding: 40px 0;
+  background-color: var(--color-dune);
+}
+
+main .section.ink {
+  --background-color: var(--color-ink);
+  --text-color: var(--color-paper);
+  --text-color-soft: var(--color-dune);
+  --light-color: var(--color-ink-soft);
+  --dark-color: var(--color-dune);
+  --link-hover-color: var(--color-paper);
+
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* motion: one hero reveal on load, nothing else moves on its own */
+.hero-reveal {
+  animation: st-rise var(--motion-base) ease-out both;
+}
+
+@keyframes st-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
