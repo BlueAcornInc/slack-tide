@@ -1,0 +1,113 @@
+/* product cards: bag cutout 1:1, title, meta, notes, price, add to cart */
+main .product-cards > ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main .product-cards article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+  min-width: 0;
+}
+
+main .product-cards .product-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-radius: var(--radius-card);
+  color: inherit;
+  text-decoration: none;
+}
+
+main .product-cards figure {
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-card);
+  background-color: var(--color-dune);
+  overflow: hidden;
+}
+
+main .product-cards figure picture,
+main .product-cards figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  object-fit: contain;
+}
+
+main .product-cards .product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+main .product-cards .product-details > * {
+  margin: 0;
+}
+
+main .product-cards .product-title {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+main .product-cards a.product-link:hover .product-title {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+main .product-cards .product-details p {
+  font-size: var(--font-size-small);
+  line-height: 1.45;
+}
+
+main .product-cards .product-details .product-meta {
+  color: var(--text-color-soft);
+}
+
+main .product-cards .product-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+main .product-cards .product-buy .price {
+  margin: 0;
+}
+
+main .product-cards .product-buy .button {
+  min-height: 44px;
+}
+
+main .product-cards .product-buy .button .icon {
+  width: 20px;
+  height: 20px;
+}
+
+main .product-cards .product-buy .button.added {
+  border-color: var(--color-ink);
+  background-color: var(--color-sky);
+  color: var(--color-ink);
+}
+
+@media (width >= 900px) {
+  main .product-cards > ul {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  main .product-cards .product-buy {
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

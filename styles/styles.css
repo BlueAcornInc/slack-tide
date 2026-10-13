@@ -111,6 +111,7 @@
     --font-size-h3: 24px;
     --font-size-body: 17px;
     --section-padding: var(--space-8);
+    --nav-height: 72px;
   }
 }
 
@@ -139,6 +140,26 @@ header {
   height: var(--nav-height);
 }
 
+@media (width >= 900px) {
+  body > header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 header .header,
 footer .footer {
   visibility: hidden;
@@ -163,7 +184,7 @@ h6 {
   line-height: 1.1;
   letter-spacing: -0.02em;
   text-wrap: balance;
-  scroll-margin: 40px;
+  scroll-margin-top: calc(var(--nav-height) + var(--space-3));
 }
 
 h1 {
@@ -376,6 +397,61 @@ button.button:disabled:focus-visible {
   color: var(--color-ink-soft);
 }
 
+/* button groups: stacked full width on phones, a row on desktop */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: var(--space-2) 0;
+}
+
+.button-group > p.button-wrapper {
+  margin: 0;
+}
+
+@media (width < 900px) {
+  main .button-wrapper a.button,
+  main .button-wrapper button.button {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+@media (width >= 900px) {
+  .button-group {
+    flex-flow: row wrap;
+  }
+
+  main a.button:any-link,
+  main button.button {
+    min-height: 48px;
+  }
+}
+
+/* "view all" arrow link: a plain link alone in its paragraph */
+a.link-arrow:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  text-underline-offset: 4px;
+}
+
+a.link-arrow::after {
+  content: '';
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-color: currentcolor;
+  mask: url('../icons/arrow.svg') center / contain no-repeat;
+}
+
+p.link-arrow-wrapper {
+  margin: 0;
+}
+
 main img {
   max-width: 100%;
   width: auto;
@@ -424,6 +500,30 @@ main img {
   color: var(--text-color-soft);
 }
 
+/* static chips: origin and process, 32 tall, not interactive */
+ul.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-sky);
+  color: var(--color-ink);
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
 /* the roast badge: Tangerine pill, the only thing that rotates */
 .badge {
   display: inline-flex;
@@ -441,6 +541,41 @@ main img {
   transform: rotate(var(--badge-tilt));
 }
 
+/* section head: heading and intro on the left, "view all" link on the right */
+.heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.heading-row > :is(h1, h2, h3) {
+  margin: 0;
+}
+
+main .default-content-wrapper.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
+}
+
+.section-head .section-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.section-head .section-head-text > * {
+  margin: 0;
+}
+
+.section-head .section-head-text > p {
+  color: var(--text-color-soft);
+}
+
 /* sections: padded, a 2px Ink rule between them */
 main > .section {
   margin: 0;
@@ -449,6 +584,10 @@ main > .section {
 
 main > .section + .section {
   border-top: var(--rule-width) solid var(--color-ink);
+}
+
+main > .section:is(.dune, .light, .highlight) + .section:not(.dune, .light, .highlight) {
+  border-top: 0;
 }
 
 main > .section > div {
